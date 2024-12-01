@@ -1,0 +1,45 @@
+// Find Minimum Diameter After Merging Two Trees -- Kumar K
+
+void dfs(int node, vector<int> adj[], vector<int>& height, vector<int>& height2, vector<int>& parent, vector<int>& visited) {
+        visited[node] = 1;
+
+        for (auto it : adj[node]) {
+            if (visited[it]) continue;
+
+            parent[it] = node;
+            dfs(it, adj, height, height2, parent, visited);
+        }
+
+        int h1 = 0, h2 = 0;
+
+        for (auto it : adj[node]) {
+            if (it == parent[node]) continue;
+
+            if (height[it] >= h1) {
+                h2 = h1;
+                h1 = height[it];
+            } else if (height[it] > h2) {
+                h2 = height[it];
+            }
+        }
+
+        height[node] = 1 + h1;
+        if(h2 != 0) height2[node] = 1 + h2;
+}
+
+int findLongestPath(vector<int> adj[], int n) {
+        vector<int> height(n, 0), height2(n, 0), parent(n, 0), visited(n, 0);
+        parent[0] = -1;
+
+        dfs(0, adj, height, height2, parent, visited);
+
+        int longestPath = 0;
+        for (int i = 0; i < n; i++) {
+            if(height2[i] != 0) longestPath = max(longestPath, height[i] + height2[i] - 1);
+            else longestPath = max(longestPath, height[i]);
+        }
+
+        return longestPath - 1; // -1 to get the number of edges in the path .
+}
+
+
