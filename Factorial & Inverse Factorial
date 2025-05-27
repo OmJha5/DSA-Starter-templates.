@@ -1,0 +1,25 @@
+// Whenever we have to calculate (fact(a) / fact(b)) % mod then we can write it as (fact(a) / inverseFactorial(b)) % mod
+vector<ll> fact, invFact;
+ll modPow(ll a, ll b, ll mod) {
+    ll res = 1;
+    while (b > 0) {
+        if (b % 2 == 1)
+            res = (res * a) % mod;
+        a = (a * a) % mod;
+        b /= 2;
+    }
+    return res;
+}
+
+void computeFactorials(int n) {
+    fact.assign(n + 1, 1);
+    invFact.assign(n + 1, 1);
+    
+    for (int i = 1; i <= n; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+    }
+    invFact[n] = modPow(fact[n], MOD - 2, MOD); // When mod is a prime number (which 1e9+7 is), we use Fermat’s Little Theorem:
+    for (int i = n - 1; i >= 0; i--) {
+        invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
+    }
+}
