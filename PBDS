@@ -1,0 +1,23 @@
+Normal set don't have 2 big functionalities in 0(logn)
+1. find out how many elements are <= target (Normal set takes 0(n) because it can find out the iterator but with distance(st.begin() , it) it will go to 0(n) )
+2. find out the element at any index i . (Normal set don't have concept of indexing).
+
+We can solve both these problems by using ordered_set which is a policy based data structure
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+
+Then in below 4 import one of your choice
+
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // (set in increasing order)
+typedef tree<int, null_type, greater<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // (set in decreasing order)
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // (multiset in increasing order)
+typedef tree<int, null_type, greater_equal<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // (multiset in decreasing order)
+
+Then just do below
+pbds st;
+
+and now st has all functionalities of normal set plus it also have 2 below functions
+1. st.order_of_key(elm) // it will find number of elements <= elm
+2. *st.find_by_order(ind) 
